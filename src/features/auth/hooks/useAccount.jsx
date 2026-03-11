@@ -2,13 +2,19 @@ import { useState, useEffect } from "react";
 
 export const useAccount = () => {
   const [user, setUser] = useState(null);
-  const [form, setForm] = useState({ name: "", email: "", password: "", image: "", background: "" });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    image: "",
+    background: ""
+  });
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: "" });
   const [isOnline, setIsOnline] = useState(navigator.onLine);
 
-  // Cargar usuario desde localStorage
+  // Cargar usuario
   useEffect(() => {
     const data = localStorage.getItem("userAccount");
     if (data) {
@@ -18,7 +24,7 @@ export const useAccount = () => {
     }
   }, []);
 
-  // Detectar estado online/offline
+  // Online/offline
   useEffect(() => {
     const goOnline = () => setIsOnline(true);
     const goOffline = () => setIsOnline(false);
@@ -53,15 +59,23 @@ export const useAccount = () => {
     const reader = new FileReader();
     reader.onloadend = () => {
       setForm(prev => ({ ...prev, [field]: reader.result }));
+      setSnackbar({
+        open: true,
+        message: `${field === "image" ? "Foto de perfil" : "Fondo de perfil"} cargada correctamente`
+      });
     };
     reader.readAsDataURL(file);
   };
 
   const saveUser = () => {
-    if (!isValid) return;
+    // Si hay errores, mostrar snackbar de error
+    if (!isValid) {
+      setSnackbar({ open: true, message: "Corrige los errores antes de continuar" });
+      return;
+    }
     localStorage.setItem("userAccount", JSON.stringify(form));
     setUser(form);
-    setSnackbar({ open: true, message: "Cuenta guardada correctamente" });
+    setSnackbar({ open: true, message: user ? "Perfil actualizado" : "Cuenta creada correctamente" });
   };
 
   const deleteUser = () => {
@@ -73,5 +87,17 @@ export const useAccount = () => {
 
   const closeSnackbar = () => setSnackbar({ open: false, message: "" });
 
-  return { user, form, errors, isValid, snackbar, isOnline, handleChange, handleImage, saveUser, deleteUser, closeSnackbar };
+  return {
+    user,
+    form,
+    errors,
+    isValid,
+    snackbar,
+    isOnline,
+    handleChange,
+    handleImage,
+    saveUser,
+    deleteUser,
+    closeSnackbar
+  };
 };
