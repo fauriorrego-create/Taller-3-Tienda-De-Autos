@@ -42,20 +42,16 @@ export const Content = () => {
 
         <Box
           component="img"
-          autoPlay
-          muted
-          loop
-          playsInline
-          aria-label="img promocional de autos deportivos"
+          src="/img/auto14.jpg"
+          alt="img promocional de autos deportivos"
           sx={{
             position: "absolute",
             width: "100%",
             height: "100%",
             objectFit: "cover"
           }}
-        >
-          <source src="/img/auto14.jpg" type="img/jpg" />
-        </Box>
+        />
+
 
         <Box
           sx={{

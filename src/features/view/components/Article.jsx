@@ -52,20 +52,17 @@ export const Article = () => {
       >
 
         <Box
-          component="video"
-          autoPlay
-          muted
-          loop
-          playsInline
+          component="img"
+          src="/img/auto13.jpg"
+          alt="img promocional de autos deportivos"
           sx={{
             position: "absolute",
             width: "100%",
             height: "100%",
             objectFit: "cover"
           }}
-        >
-          <source src="/videos/Video-Project.mp4" type="video/mp4" />
-        </Box>
+        />
+
 
         <Box
           sx={{
