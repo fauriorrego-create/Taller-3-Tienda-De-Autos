@@ -1,6 +1,7 @@
 
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import "./shared/styles/Index.css";
 import App from './App.jsx'
 import { FavoritesProvider } from "./features/view/hooks/useFavorites.jsx";
 import { ShoppingProvider } from "./features/auth/hooks/useShopping.jsx";
