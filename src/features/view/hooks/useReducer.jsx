@@ -19,7 +19,7 @@ export default function Carrito() {
 
   return (
     <>
-      <Typography variant="h5">
+      <Typography component="h1" variant="h5">
         Total: ${state.total}
       </Typography>
 

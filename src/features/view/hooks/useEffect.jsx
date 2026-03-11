@@ -14,7 +14,7 @@ export default function Reloj() {
 
   return (
     <Box textAlign="center">
-      <Typography variant="h4">
+      <Typography component="h1" variant="h4">
         {hora.toLocaleTimeString()}
       </Typography>
     </Box>

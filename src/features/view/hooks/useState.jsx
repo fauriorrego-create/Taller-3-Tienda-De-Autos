@@ -13,7 +13,7 @@ export default function ColorSelector() {
         borderRadius: 2
       }}
     >
-      <Typography variant="h5">Color actual: {color}</Typography>
+      <Typography component="h1" variant="h5">Color actual: {color}</Typography>
 
       <Button onClick={() => setColor("lightblue")} sx={{ m: 1 }}>
         Azul

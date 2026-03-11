@@ -7,7 +7,7 @@ function Texto() {
   const idioma = useContext(IdiomaContext);
 
   return (
-    <Typography variant="h5">
+    <Typography  component="h1" variant="h5">
       {idioma === "es" ? "Bienvenido" : "Welcome"}
     </Typography>
   );
