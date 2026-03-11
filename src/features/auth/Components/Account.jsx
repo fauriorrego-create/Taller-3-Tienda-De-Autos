@@ -24,7 +24,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useAccount } from "../hooks/useAccount";
 
 export const Account = () => {
-
   const {
     user,
     form,
@@ -44,23 +43,19 @@ export const Account = () => {
     return errors[field] ? "error.main" : "success.main";
   };
 
+  // Manejar submit del formulario
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Evita recarga de página
+    saveUser();
+  };
+
   return (
-
-    <Container
-      component="main"
-      role="main"
-      maxWidth="lg"
-      sx={{ py: 6 }}
-    >
-
+    <Container component="main" role="main" maxWidth="lg" sx={{ py: 6 }}>
       <Grid container spacing={4} justifyContent="center">
 
         {/* PERFIL */}
-
         <Grid item xs={12} md={4}>
-
           <Card sx={{ borderRadius: 4, overflow: "hidden" }}>
-
             <Box
               role="img"
               aria-label="Imagen de fondo del perfil"
@@ -73,16 +68,10 @@ export const Account = () => {
                 backgroundPosition: "center"
               }}
             />
-
             <CardContent sx={{ textAlign: "center" }}>
-
               <Avatar
                 src={user?.image || ""}
-                alt={
-                  user?.name
-                    ? `Foto de perfil de ${user.name}`
-                    : "Foto de perfil del usuario"
-                }
+                alt={user?.name ? `Foto de perfil de ${user.name}` : "Foto de perfil del usuario"}
                 sx={{
                   width: 120,
                   height: 120,
@@ -108,28 +97,25 @@ export const Account = () => {
                 sx={{
                   mt: 1,
                   fontWeight: "bold",
-                  color: isOnline ? "green" : "red"
+                  color: isOnline ? "success.main" : "error.main"
                 }}
               >
                 {isOnline ? "● En línea" : "● Sin conexión"}
               </Typography>
-
             </CardContent>
-
           </Card>
-
         </Grid>
 
         {/* FORMULARIO */}
-
         <Grid item xs={12} md={8}>
-
           <Card sx={{ borderRadius: 4 }}>
-
             <CardContent>
-
-              <Stack spacing={3} component="form">
-
+              <Stack
+                spacing={3}
+                component="form"
+                onSubmit={handleSubmit} // <- importante para submit
+                noValidate
+              >
                 <TextField
                   label="Nombre"
                   name="name"
@@ -143,10 +129,7 @@ export const Account = () => {
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <PersonIcon
-                          aria-hidden="true"
-                          sx={{ color: getColor("name") }}
-                        />
+                        <PersonIcon aria-hidden="true" sx={{ color: getColor("name") }} />
                       </InputAdornment>
                     )
                   }}
@@ -165,10 +148,7 @@ export const Account = () => {
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <EmailIcon
-                          aria-hidden="true"
-                          sx={{ color: getColor("email") }}
-                        />
+                        <EmailIcon aria-hidden="true" sx={{ color: getColor("email") }} />
                       </InputAdornment>
                     )
                   }}
@@ -188,10 +168,7 @@ export const Account = () => {
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <LockIcon
-                          aria-hidden="true"
-                          sx={{ color: getColor("password") }}
-                        />
+                        <LockIcon aria-hidden="true" sx={{ color: getColor("password") }} />
                       </InputAdornment>
                     )
                   }}
@@ -205,12 +182,7 @@ export const Account = () => {
                   aria-label="Subir imagen de perfil"
                 >
                   Imagen de perfil
-                  <input
-                    hidden
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => handleImage(e, "image")}
-                  />
+                  <input hidden type="file" accept="image/*" onChange={(e) => handleImage(e, "image")} />
                 </Button>
 
                 <Button
@@ -221,18 +193,13 @@ export const Account = () => {
                   aria-label="Subir fondo de perfil"
                 >
                   Fondo de perfil
-                  <input
-                    hidden
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => handleImage(e, "background")}
-                  />
+                  <input hidden type="file" accept="image/*" onChange={(e) => handleImage(e, "background")} />
                 </Button>
 
                 <Button
+                  type="submit" // <- ahora funciona correctamente
                   variant="contained"
                   startIcon={<SaveIcon />}
-                  onClick={saveUser}
                   disabled={!isValid}
                   fullWidth
                   size="large"
@@ -253,32 +220,17 @@ export const Account = () => {
                     Eliminar cuenta
                   </Button>
                 )}
-
               </Stack>
-
             </CardContent>
-
           </Card>
-
         </Grid>
-
       </Grid>
 
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={3000}
-        onClose={closeSnackbar}
-      >
-        <Alert
-          severity="success"
-          variant="filled"
-          role="alert"
-        >
+      <Snackbar open={snackbar.open} autoHideDuration={3000} onClose={closeSnackbar}>
+        <Alert severity="success" variant="filled" role="alert">
           {snackbar.message}
         </Alert>
       </Snackbar>
-
     </Container>
-
   );
 };
