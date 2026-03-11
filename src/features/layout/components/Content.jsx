@@ -41,12 +41,12 @@ export const Content = () => {
       >
 
         <Box
-          component="video"
+          component="img"
           autoPlay
           muted
           loop
           playsInline
-          aria-label="Video promocional de autos deportivos"
+          aria-label="img promocional de autos deportivos"
           sx={{
             position: "absolute",
             width: "100%",
@@ -54,7 +54,7 @@ export const Content = () => {
             objectFit: "cover"
           }}
         >
-          <source src="/videos/videoplayback (3).webm" type="video/webm" />
+          <source src="/img/auto14.jpg" type="img/jpg" />
         </Box>
 
         <Box
