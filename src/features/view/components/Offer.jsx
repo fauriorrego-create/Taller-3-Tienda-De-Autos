@@ -46,8 +46,8 @@ export const Offer = () => {
 
       <Typography
         id="hooks-title"
-        variant="h4"
         component="h1"
+        variant="h4"
         fontWeight="bold"
         textAlign="center"
         gutterBottom
@@ -78,6 +78,8 @@ export const Offer = () => {
           >
 
             <CardContent sx={{ textAlign: "center" }}>
+
+              {/* Subtítulo */}
 
               <Typography
                 id={`title-${card.id}`}
@@ -121,9 +123,13 @@ export const Offer = () => {
             <Box mt={2}>
 
               <Typography
-                variant="body1"
+                component="p"
                 aria-live="polite"
-                color={isOnline ? "success.main" : "error.main"}
+                sx={{
+                  fontSize: "1.1rem",
+                  fontWeight: 500,
+                  color: isOnline ? "success.main" : "error.main"
+                }}
               >
                 {isOnline
                   ? "Conectado a internet"
