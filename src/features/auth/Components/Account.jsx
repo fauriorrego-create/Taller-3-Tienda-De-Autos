@@ -28,7 +28,6 @@ export const Account = () => {
     user,
     form,
     errors,
-    isValid,
     snackbar,
     isOnline,
     handleChange,
@@ -55,9 +54,7 @@ export const Account = () => {
               aria-label="Imagen de fondo del perfil"
               sx={{
                 height: 200,
-                backgroundImage: form.background
-                  ? `url(${form.background})`
-                  : user?.background
+                backgroundImage: user?.background
                   ? `url(${user.background})`
                   : "linear-gradient(135deg,#1976d2,#42a5f5)",
                 backgroundSize: "cover",
@@ -66,7 +63,7 @@ export const Account = () => {
             />
             <CardContent sx={{ textAlign: "center" }}>
               <Avatar
-                src={form.image || user?.image || ""}
+                src={user?.image || ""}
                 alt={user?.name ? `Foto de perfil de ${user.name}` : "Foto de perfil del usuario"}
                 sx={{
                   width: 120,
@@ -77,15 +74,15 @@ export const Account = () => {
                   border: "4px solid white"
                 }}
               >
-                {!form.image && !user?.image && <PersonIcon aria-hidden="true" />}
+                {!user?.image && <PersonIcon aria-hidden="true" />}
               </Avatar>
 
               <Typography component="h1" variant="h6">
-                {form.name || user?.name || "Invitado"}
+                {user?.name || "Invitado"}
               </Typography>
 
               <Typography color="text.secondary">
-                {form.email || user?.email || "Sin correo"}
+                {user?.email || "Sin correo"}
               </Typography>
 
               <Typography
@@ -106,7 +103,15 @@ export const Account = () => {
         <Grid item xs={12} md={8}>
           <Card sx={{ borderRadius: 4 }}>
             <CardContent>
-              <Stack spacing={3} component="form" noValidate>
+              <Stack
+                spacing={3}
+                component="form"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  saveUser();
+                }}
+                noValidate
+              >
                 <TextField
                   label="Nombre"
                   name="name"
@@ -165,70 +170,35 @@ export const Account = () => {
                   }}
                 />
 
-                {/* IMAGENES DINÁMICAS */}
-                <Box>
-                  <Button
-                    variant="outlined"
-                    component="label"
-                    startIcon={<UploadIcon />}
-                    fullWidth
-                    aria-label="Subir imagen de perfil"
-                  >
-                    {form.image ? "Imagen seleccionada" : "Subir imagen de perfil"}
-                    <input
-                      hidden
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => handleImage(e, "image")}
-                    />
-                  </Button>
-                  {form.image && (
-                    <Box
-                      mt={1}
-                      component="img"
-                      src={form.image}
-                      alt="Preview de imagen de perfil"
-                      sx={{ width: 100, height: 100, borderRadius: "50%", mx: "auto" }}
-                    />
-                  )}
-                </Box>
-
-                <Box>
-                  <Button
-                    variant="outlined"
-                    component="label"
-                    startIcon={<UploadIcon />}
-                    fullWidth
-                    aria-label="Subir fondo de perfil"
-                  >
-                    {form.background ? "Fondo seleccionado" : "Subir fondo de perfil"}
-                    <input
-                      hidden
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => handleImage(e, "background")}
-                    />
-                  </Button>
-                  {form.background && (
-                    <Box
-                      mt={1}
-                      component="img"
-                      src={form.background}
-                      alt="Preview del fondo de perfil"
-                      sx={{ width: "100%", height: 100, objectFit: "cover", borderRadius: 2 }}
-                    />
-                  )}
-                </Box>
-
-                {/* BOTON REGISTRARSE / ACTUALIZAR */}
+                {/* Subida de imágenes dinámica */}
                 <Button
-                  type="button"
+                  variant="outlined"
+                  component="label"
+                  startIcon={<UploadIcon />}
+                  fullWidth
+                  aria-label="Subir imagen de perfil"
+                >
+                  {form.image ? "Imagen cargada ✅" : "Subir imagen de perfil"}
+                  <input hidden type="file" accept="image/*" onChange={(e) => handleImage(e, "image")} />
+                </Button>
+
+                <Button
+                  variant="outlined"
+                  component="label"
+                  startIcon={<UploadIcon />}
+                  fullWidth
+                  aria-label="Subir fondo de perfil"
+                >
+                  {form.background ? "Fondo cargado ✅" : "Subir fondo de perfil"}
+                  <input hidden type="file" accept="image/*" onChange={(e) => handleImage(e, "background")} />
+                </Button>
+
+                <Button
+                  type="submit"
                   variant="contained"
                   startIcon={<SaveIcon />}
-                  disabled={!isValid}
                   fullWidth
                   size="large"
-                  onClick={saveUser}
                   aria-label="Guardar o registrar usuario"
                 >
                   {user ? "Actualizar perfil" : "Registrarse"}

@@ -2,15 +2,8 @@ import { useState, useEffect } from "react";
 
 export const useAccount = () => {
   const [user, setUser] = useState(null);
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    password: "",
-    image: "",
-    background: ""
-  });
+  const [form, setForm] = useState({ name: "", email: "", password: "", image: "", background: "" });
   const [errors, setErrors] = useState({});
-  const [isValid, setIsValid] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: "" });
   const [isOnline, setIsOnline] = useState(navigator.onLine);
 
@@ -24,7 +17,7 @@ export const useAccount = () => {
     }
   }, []);
 
-  // Online/offline
+  // Detectar online/offline
   useEffect(() => {
     const goOnline = () => setIsOnline(true);
     const goOffline = () => setIsOnline(false);
@@ -36,8 +29,7 @@ export const useAccount = () => {
     };
   }, []);
 
-  // Validación en tiempo real
-  useEffect(() => {
+  const validateForm = () => {
     const newErrors = {};
     if (!form.name.trim()) newErrors.name = "Ingresa tu nombre";
     if (!form.email) newErrors.email = "Ingresa un correo";
@@ -45,8 +37,8 @@ export const useAccount = () => {
     if (!form.password) newErrors.password = "Ingresa una contraseña";
     else if (form.password.length < 6) newErrors.password = "Mínimo 6 caracteres";
     setErrors(newErrors);
-    setIsValid(Object.keys(newErrors).length === 0);
-  }, [form]);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -59,23 +51,15 @@ export const useAccount = () => {
     const reader = new FileReader();
     reader.onloadend = () => {
       setForm(prev => ({ ...prev, [field]: reader.result }));
-      setSnackbar({
-        open: true,
-        message: `${field === "image" ? "Foto de perfil" : "Fondo de perfil"} cargada correctamente`
-      });
     };
     reader.readAsDataURL(file);
   };
 
   const saveUser = () => {
-    // Si hay errores, mostrar snackbar de error
-    if (!isValid) {
-      setSnackbar({ open: true, message: "Corrige los errores antes de continuar" });
-      return;
-    }
+    if (!validateForm()) return;
     localStorage.setItem("userAccount", JSON.stringify(form));
     setUser(form);
-    setSnackbar({ open: true, message: user ? "Perfil actualizado" : "Cuenta creada correctamente" });
+    setSnackbar({ open: true, message: "Cuenta guardada correctamente" });
   };
 
   const deleteUser = () => {
@@ -87,17 +71,5 @@ export const useAccount = () => {
 
   const closeSnackbar = () => setSnackbar({ open: false, message: "" });
 
-  return {
-    user,
-    form,
-    errors,
-    isValid,
-    snackbar,
-    isOnline,
-    handleChange,
-    handleImage,
-    saveUser,
-    deleteUser,
-    closeSnackbar
-  };
+  return { user, form, errors, snackbar, isOnline, handleChange, handleImage, saveUser, deleteUser, closeSnackbar };
 };
