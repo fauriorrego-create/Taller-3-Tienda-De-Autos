@@ -11,7 +11,8 @@ import {
   Stack,
   InputAdornment,
   Snackbar,
-  Alert
+  Alert,
+  LinearProgress
 } from "@mui/material";
 
 import PersonIcon from "@mui/icons-material/Person";
@@ -43,27 +44,27 @@ export const Account = () => {
   };
 
   return (
-    <Container component="main" role="main" maxWidth="lg" sx={{ py: 6 }}>
+    <Container component="main" role="main" maxWidth="md" sx={{ py: 6 }}>
       <Grid container spacing={4} justifyContent="center">
 
         {/* PERFIL */}
         <Grid item xs={12} md={4}>
-          <Card sx={{ borderRadius: 4, overflow: "hidden" }}>
+          <Card sx={{ borderRadius: 4, overflow: "hidden", boxShadow: 6 }}>
             <Box
               role="img"
               aria-label="Imagen de fondo del perfil"
               sx={{
-                height: 200,
+                height: 180,
                 backgroundImage: user?.background
                   ? `url(${user.background})`
-                  : "linear-gradient(135deg,#1976d2,#42a5f5)",
+                  : "linear-gradient(120deg,#6a11cb,#2575fc)",
                 backgroundSize: "cover",
                 backgroundPosition: "center"
               }}
             />
-            <CardContent sx={{ textAlign: "center" }}>
+            <CardContent sx={{ textAlign: "center", position: "relative" }}>
               <Avatar
-                src={user?.image || ""}
+                src={form.image || user?.image || ""}
                 alt={user?.name ? `Foto de perfil de ${user.name}` : "Foto de perfil del usuario"}
                 sx={{
                   width: 120,
@@ -71,18 +72,19 @@ export const Account = () => {
                   mx: "auto",
                   mt: -8,
                   mb: 2,
-                  border: "4px solid white"
+                  border: "4px solid white",
+                  transition: "0.3s all"
                 }}
               >
-                {!user?.image && <PersonIcon aria-hidden="true" />}
+                {!form.image && !user?.image && <PersonIcon aria-hidden="true" />}
               </Avatar>
 
               <Typography component="h1" variant="h6">
-                {user?.name || "Invitado"}
+                {user?.name || form.name || "Invitado"}
               </Typography>
 
               <Typography color="text.secondary">
-                {user?.email || "Sin correo"}
+                {user?.email || form.email || "Sin correo"}
               </Typography>
 
               <Typography
@@ -101,7 +103,7 @@ export const Account = () => {
 
         {/* FORMULARIO */}
         <Grid item xs={12} md={8}>
-          <Card sx={{ borderRadius: 4 }}>
+          <Card sx={{ borderRadius: 4, boxShadow: 6 }}>
             <CardContent>
               <Stack
                 spacing={3}
@@ -120,12 +122,10 @@ export const Account = () => {
                   fullWidth
                   error={!!errors.name}
                   helperText={errors.name}
-                  aria-label="Nombre del usuario"
-                  aria-invalid={!!errors.name}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <PersonIcon aria-hidden="true" sx={{ color: getColor("name") }} />
+                        <PersonIcon sx={{ color: getColor("name") }} />
                       </InputAdornment>
                     )
                   }}
@@ -139,12 +139,10 @@ export const Account = () => {
                   fullWidth
                   error={!!errors.email}
                   helperText={errors.email}
-                  aria-label="Correo electrónico"
-                  aria-invalid={!!errors.email}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <EmailIcon aria-hidden="true" sx={{ color: getColor("email") }} />
+                        <EmailIcon sx={{ color: getColor("email") }} />
                       </InputAdornment>
                     )
                   }}
@@ -159,39 +157,37 @@ export const Account = () => {
                   fullWidth
                   error={!!errors.password}
                   helperText={errors.password}
-                  aria-label="Contraseña"
-                  aria-invalid={!!errors.password}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <LockIcon aria-hidden="true" sx={{ color: getColor("password") }} />
+                        <LockIcon sx={{ color: getColor("password") }} />
                       </InputAdornment>
                     )
                   }}
                 />
 
-                {/* Subida de imágenes dinámica */}
+                {/* Subida de imágenes con previsualización */}
                 <Button
                   variant="outlined"
                   component="label"
                   startIcon={<UploadIcon />}
                   fullWidth
-                  aria-label="Subir imagen de perfil"
                 >
-                  {form.image ? "Imagen cargada ✅" : "Subir imagen de perfil"}
+                  {form.image ? "Imagen de perfil seleccionada ✅" : "Subir imagen de perfil"}
                   <input hidden type="file" accept="image/*" onChange={(e) => handleImage(e, "image")} />
                 </Button>
+                {form.image && <LinearProgress variant="determinate" value={100} sx={{ mb: 1 }} />}
 
                 <Button
                   variant="outlined"
                   component="label"
                   startIcon={<UploadIcon />}
                   fullWidth
-                  aria-label="Subir fondo de perfil"
                 >
-                  {form.background ? "Fondo cargado ✅" : "Subir fondo de perfil"}
+                  {form.background ? "Fondo seleccionado ✅" : "Subir fondo de perfil"}
                   <input hidden type="file" accept="image/*" onChange={(e) => handleImage(e, "background")} />
                 </Button>
+                {form.background && <LinearProgress variant="determinate" value={100} sx={{ mb: 1 }} />}
 
                 <Button
                   type="submit"
@@ -199,7 +195,6 @@ export const Account = () => {
                   startIcon={<SaveIcon />}
                   fullWidth
                   size="large"
-                  aria-label="Guardar o registrar usuario"
                 >
                   {user ? "Actualizar perfil" : "Registrarse"}
                 </Button>
@@ -211,7 +206,6 @@ export const Account = () => {
                     startIcon={<DeleteIcon />}
                     onClick={deleteUser}
                     fullWidth
-                    aria-label="Eliminar cuenta del usuario"
                   >
                     Eliminar cuenta
                   </Button>
@@ -223,7 +217,7 @@ export const Account = () => {
       </Grid>
 
       <Snackbar open={snackbar.open} autoHideDuration={3000} onClose={closeSnackbar}>
-        <Alert severity="success" variant="filled" role="alert">
+        <Alert severity="success" variant="filled">
           {snackbar.message}
         </Alert>
       </Snackbar>
