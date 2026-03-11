@@ -34,14 +34,16 @@ export const Offer = () => {
   ];
 
   return (
+
     <Container
       component="main"
       maxWidth="md"
       sx={{ py: 8 }}
       aria-labelledby="hooks-title"
     >
-      
+
       {/* Título principal */}
+
       <Typography
         id="hooks-title"
         variant="h4"
@@ -79,8 +81,8 @@ export const Offer = () => {
 
               <Typography
                 id={`title-${card.id}`}
-                variant="h6"
                 component="h2"
+                variant="h6"
                 mb={2}
               >
                 {card.title}
@@ -110,8 +112,8 @@ export const Offer = () => {
 
             <Typography
               id="online-status-title"
-              variant="h6"
               component="h2"
+              variant="h6"
             >
               Estado de conexión
             </Typography>
@@ -119,12 +121,13 @@ export const Offer = () => {
             <Box mt={2}>
 
               <Typography
-                variant="h5"
-                role="status"
+                variant="body1"
                 aria-live="polite"
                 color={isOnline ? "success.main" : "error.main"}
               >
-                {isOnline ? "Conectado a internet" : "Sin conexión a internet"}
+                {isOnline
+                  ? "Conectado a internet"
+                  : "Sin conexión a internet"}
               </Typography>
 
             </Box>
