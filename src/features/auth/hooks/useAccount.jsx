@@ -2,12 +2,18 @@ import { useState, useEffect } from "react";
 
 export const useAccount = () => {
   const [user, setUser] = useState(null);
-  const [form, setForm] = useState({ name: "", email: "", password: "", image: "", background: "" });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    image: "",
+    background: ""
+  });
   const [errors, setErrors] = useState({});
   const [snackbar, setSnackbar] = useState({ open: false, message: "" });
   const [isOnline, setIsOnline] = useState(navigator.onLine);
 
-  // Cargar usuario
+  // Cargar usuario desde localStorage
   useEffect(() => {
     const data = localStorage.getItem("userAccount");
     if (data) {
@@ -17,7 +23,7 @@ export const useAccount = () => {
     }
   }, []);
 
-  // Detectar online/offline
+  // Detectar estado online/offline
   useEffect(() => {
     const goOnline = () => setIsOnline(true);
     const goOffline = () => setIsOnline(false);
@@ -29,7 +35,8 @@ export const useAccount = () => {
     };
   }, []);
 
-  const validateForm = () => {
+  // Validación en tiempo real
+  useEffect(() => {
     const newErrors = {};
     if (!form.name.trim()) newErrors.name = "Ingresa tu nombre";
     if (!form.email) newErrors.email = "Ingresa un correo";
@@ -37,8 +44,7 @@ export const useAccount = () => {
     if (!form.password) newErrors.password = "Ingresa una contraseña";
     else if (form.password.length < 6) newErrors.password = "Mínimo 6 caracteres";
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  }, [form]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -56,7 +62,20 @@ export const useAccount = () => {
   };
 
   const saveUser = () => {
-    if (!validateForm()) return;
+    // Validación manual antes de guardar
+    const newErrors = {};
+    if (!form.name.trim()) newErrors.name = "Ingresa tu nombre";
+    if (!form.email) newErrors.email = "Ingresa un correo";
+    else if (!/\S+@\S+\.\S+/.test(form.email)) newErrors.email = "Correo inválido";
+    if (!form.password) newErrors.password = "Ingresa una contraseña";
+    else if (form.password.length < 6) newErrors.password = "Mínimo 6 caracteres";
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      setSnackbar({ open: true, message: "Corrige los errores antes de guardar" });
+      return;
+    }
+
     localStorage.setItem("userAccount", JSON.stringify(form));
     setUser(form);
     setSnackbar({ open: true, message: "Cuenta guardada correctamente" });
@@ -71,5 +90,16 @@ export const useAccount = () => {
 
   const closeSnackbar = () => setSnackbar({ open: false, message: "" });
 
-  return { user, form, errors, snackbar, isOnline, handleChange, handleImage, saveUser, deleteUser, closeSnackbar };
+  return {
+    user,
+    form,
+    errors,
+    snackbar,
+    isOnline,
+    handleChange,
+    handleImage,
+    saveUser,
+    deleteUser,
+    closeSnackbar
+  };
 };
