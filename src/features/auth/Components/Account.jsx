@@ -197,7 +197,7 @@ export const Account = () => {
                 </Button>
 
                 <Button
-                  type="submit" // <- ahora funciona correctamente
+                  type="button" // <- ahora funciona correctamente
                   variant="contained"
                   startIcon={<SaveIcon />}
                   disabled={!isValid}
