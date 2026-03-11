@@ -43,8 +43,13 @@ export const Account = () => {
     return errors[field] ? "error.main" : "success.main";
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    saveUser(); // Llama a saveUser directamente
+  };
+
   return (
-    <Container component="main" role="main" maxWidth="md" sx={{ py: 6 }}>
+    <Container component="main" maxWidth="md" sx={{ py: 6 }}>
       <Grid container spacing={4} justifyContent="center">
 
         {/* PERFIL */}
@@ -55,45 +60,33 @@ export const Account = () => {
               aria-label="Imagen de fondo del perfil"
               sx={{
                 height: 180,
-                backgroundImage: user?.background
-                  ? `url(${user.background})`
+                backgroundImage: form.background || user?.background
+                  ? `url(${form.background || user.background})`
                   : "linear-gradient(120deg,#6a11cb,#2575fc)",
                 backgroundSize: "cover",
                 backgroundPosition: "center"
               }}
             />
-            <CardContent sx={{ textAlign: "center", position: "relative" }}>
+            <CardContent sx={{ textAlign: "center" }}>
               <Avatar
                 src={form.image || user?.image || ""}
-                alt={user?.name ? `Foto de perfil de ${user.name}` : "Foto de perfil del usuario"}
+                alt={user?.name || "Invitado"}
                 sx={{
                   width: 120,
                   height: 120,
                   mx: "auto",
                   mt: -8,
                   mb: 2,
-                  border: "4px solid white",
-                  transition: "0.3s all"
+                  border: "4px solid white"
                 }}
               >
-                {!form.image && !user?.image && <PersonIcon aria-hidden="true" />}
+                {!form.image && !user?.image && <PersonIcon />}
               </Avatar>
-
-              <Typography component="h1" variant="h6">
-                {user?.name || form.name || "Invitado"}
-              </Typography>
-
-              <Typography color="text.secondary">
-                {user?.email || form.email || "Sin correo"}
-              </Typography>
-
+              <Typography variant="h6">{form.name || user?.name || "Invitado"}</Typography>
+              <Typography color="text.secondary">{form.email || user?.email || "Sin correo"}</Typography>
               <Typography
                 aria-live="polite"
-                sx={{
-                  mt: 1,
-                  fontWeight: "bold",
-                  color: isOnline ? "success.main" : "error.main"
-                }}
+                sx={{ mt: 1, fontWeight: "bold", color: isOnline ? "success.main" : "error.main" }}
               >
                 {isOnline ? "● En línea" : "● Sin conexión"}
               </Typography>
@@ -108,10 +101,7 @@ export const Account = () => {
               <Stack
                 spacing={3}
                 component="form"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  saveUser();
-                }}
+                onSubmit={handleSubmit}
                 noValidate
               >
                 <TextField
@@ -123,11 +113,7 @@ export const Account = () => {
                   error={!!errors.name}
                   helperText={errors.name}
                   InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <PersonIcon sx={{ color: getColor("name") }} />
-                      </InputAdornment>
-                    )
+                    startAdornment: <InputAdornment position="start"><PersonIcon sx={{ color: getColor("name") }} /></InputAdornment>
                   }}
                 />
 
@@ -140,11 +126,7 @@ export const Account = () => {
                   error={!!errors.email}
                   helperText={errors.email}
                   InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <EmailIcon sx={{ color: getColor("email") }} />
-                      </InputAdornment>
-                    )
+                    startAdornment: <InputAdornment position="start"><EmailIcon sx={{ color: getColor("email") }} /></InputAdornment>
                   }}
                 />
 
@@ -158,55 +140,28 @@ export const Account = () => {
                   error={!!errors.password}
                   helperText={errors.password}
                   InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <LockIcon sx={{ color: getColor("password") }} />
-                      </InputAdornment>
-                    )
+                    startAdornment: <InputAdornment position="start"><LockIcon sx={{ color: getColor("password") }} /></InputAdornment>
                   }}
                 />
 
-                {/* Subida de imágenes con previsualización */}
-                <Button
-                  variant="outlined"
-                  component="label"
-                  startIcon={<UploadIcon />}
-                  fullWidth
-                >
+                <Button variant="outlined" component="label" startIcon={<UploadIcon />} fullWidth>
                   {form.image ? "Imagen de perfil seleccionada ✅" : "Subir imagen de perfil"}
                   <input hidden type="file" accept="image/*" onChange={(e) => handleImage(e, "image")} />
                 </Button>
                 {form.image && <LinearProgress variant="determinate" value={100} sx={{ mb: 1 }} />}
 
-                <Button
-                  variant="outlined"
-                  component="label"
-                  startIcon={<UploadIcon />}
-                  fullWidth
-                >
+                <Button variant="outlined" component="label" startIcon={<UploadIcon />} fullWidth>
                   {form.background ? "Fondo seleccionado ✅" : "Subir fondo de perfil"}
                   <input hidden type="file" accept="image/*" onChange={(e) => handleImage(e, "background")} />
                 </Button>
                 {form.background && <LinearProgress variant="determinate" value={100} sx={{ mb: 1 }} />}
 
-                <Button
-                  type="submit"
-                  variant="contained"
-                  startIcon={<SaveIcon />}
-                  fullWidth
-                  size="large"
-                >
+                <Button type="submit" variant="contained" startIcon={<SaveIcon />} fullWidth size="large">
                   {user ? "Actualizar perfil" : "Registrarse"}
                 </Button>
 
                 {user && (
-                  <Button
-                    variant="outlined"
-                    color="error"
-                    startIcon={<DeleteIcon />}
-                    onClick={deleteUser}
-                    fullWidth
-                  >
+                  <Button variant="outlined" color="error" startIcon={<DeleteIcon />} onClick={deleteUser} fullWidth>
                     Eliminar cuenta
                   </Button>
                 )}
@@ -217,9 +172,7 @@ export const Account = () => {
       </Grid>
 
       <Snackbar open={snackbar.open} autoHideDuration={3000} onClose={closeSnackbar}>
-        <Alert severity="success" variant="filled">
-          {snackbar.message}
-        </Alert>
+        <Alert severity="success" variant="filled">{snackbar.message}</Alert>
       </Snackbar>
     </Container>
   );
