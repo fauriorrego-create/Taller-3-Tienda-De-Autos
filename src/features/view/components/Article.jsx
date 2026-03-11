@@ -19,7 +19,6 @@ import { useShopping } from "../../auth/hooks/useShopping";
 import { useFavorites } from "../hooks/useFavorites";
 
 export const Article = () => {
-
   const { addCart } = useShopping();
   const { toggleFavorite, isFavorite } = useFavorites();
 
@@ -39,10 +38,9 @@ export const Article = () => {
   ];
 
   return (
-    <>
+    <main>
 
       {/* HERO VIDEO */}
-
       <Box
         sx={{
           position: "relative",
@@ -50,11 +48,10 @@ export const Article = () => {
           overflow: "hidden"
         }}
       >
-
         <Box
           component="img"
           src="/img/auto13.jpg"
-          alt="img promocional de autos deportivos"
+          alt="Imagen promocional de autos deportivos"
           sx={{
             position: "absolute",
             width: "100%",
@@ -62,8 +59,6 @@ export const Article = () => {
             objectFit: "cover"
           }}
         />
-
-
         <Box
           sx={{
             position: "absolute",
@@ -71,7 +66,6 @@ export const Article = () => {
             background: "rgba(0,0,0,0.55)"
           }}
         />
-
         <Box
           sx={{
             position: "relative",
@@ -81,14 +75,14 @@ export const Article = () => {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            color: "white",
+            color: "#ffffff",
             textAlign: "center",
             px: 2
           }}
         >
-
           <Typography
-            variant="h2"
+            component="h1"
+            variant="h3"
             fontWeight="bold"
             sx={{ fontSize: { xs: "2.5rem", md: "3.5rem" } }}
           >
@@ -96,73 +90,55 @@ export const Article = () => {
           </Typography>
 
           <Typography
-            variant="h6"
+            component="p"
+            variant="body1"
             sx={{ mt: 2, maxWidth: 600 }}
           >
             Descubre los mejores autos deportivos del mercado
           </Typography>
-
         </Box>
-
       </Box>
 
-
       {/* ESTADISTICAS */}
-
       <Container sx={{ py: 6 }}>
-
         <Stack
           direction={{ xs: "column", md: "row" }}
           spacing={6}
           justifyContent="center"
           textAlign="center"
         >
-
           <Box>
-            <Typography variant="h4" fontWeight="bold">
+            <Typography component="p" variant="h5" fontWeight="bold" color="text.primary">
               12+
             </Typography>
-            <Typography color="text.secondary">
+            <Typography component="p" color="text.secondary">
               Autos exclusivos
             </Typography>
           </Box>
-
           <Box>
-            <Typography variant="h4" fontWeight="bold">
+            <Typography component="p" variant="h5" fontWeight="bold" color="text.primary">
               500+
             </Typography>
-            <Typography color="text.secondary">
+            <Typography component="p" color="text.secondary">
               Clientes satisfechos
             </Typography>
           </Box>
-
           <Box>
-            <Typography variant="h4" fontWeight="bold">
+            <Typography component="p" variant="h5" fontWeight="bold" color="text.primary">
               10+
             </Typography>
-            <Typography color="text.secondary">
+            <Typography component="p" color="text.secondary">
               Marcas premium
             </Typography>
           </Box>
-
         </Stack>
-
       </Container>
 
-
       {/* LISTA DE AUTOS */}
-
       <Container maxWidth="lg" sx={{ pb: 8 }}>
-
-        <Typography
-          variant="h4"
-          fontWeight="bold"
-          textAlign="center"
-          mb={6}
-        >
+        <Typography component="h2" variant="h4" fontWeight="bold" textAlign="center" mb={6}>
           Artículos en el mercado
         </Typography>
-
 
         <Box
           sx={{
@@ -176,13 +152,10 @@ export const Article = () => {
             gap: { xs: 3, md: 4 }
           }}
         >
-
           {cars.map((car) => {
-
             const favorite = isFavorite(car.id);
 
             return (
-
               <Card
                 key={car.id}
                 sx={{
@@ -190,82 +163,57 @@ export const Article = () => {
                   flexDirection: "column",
                   borderRadius: 3,
                   transition: "0.25s",
-                  "&:hover": {
-                    transform: "translateY(-6px)",
-                    boxShadow: 6
-                  }
+                  "&:hover": { transform: "translateY(-6px)", boxShadow: 6 }
                 }}
               >
-
                 <CardMedia
                   component="img"
                   image={`/img/${car.img}`}
-                  alt={car.name}
+                  alt={`Foto del auto ${car.name}`}
                   loading="lazy"
-                  sx={{
-                    height: 200,
-                    objectFit: "cover"
-                  }}
+                  sx={{ height: 200, objectFit: "cover" }}
                 />
 
-                <CardContent
-                  sx={{
-                    flexGrow: 1,
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                    textAlign: "center"
-                  }}
-                >
-
+                <CardContent sx={{ flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "space-between", textAlign: "center" }}>
                   <Box>
-
-                    <Typography variant="h6" fontWeight="bold">
+                    <Typography component="p" variant="h6" fontWeight="bold">
                       {car.name}
                     </Typography>
 
-                    <Typography
-                      fontWeight="bold"
-                      color="primary"
-                      mb={2}
-                    >
+                    <Typography component="p" fontWeight="bold" color="primary" mb={2}>
                       {car.price}
                     </Typography>
 
                     <Stack spacing={1}>
-
                       <Box display="flex" justifyContent="center" gap={1}>
-                        <SpeedIcon fontSize="small"/>
-                        <Typography variant="body2">
+                        <SpeedIcon fontSize="small" aria-hidden="true" />
+                        <Typography component="p" variant="body2">
                           {car.speed}
                         </Typography>
                       </Box>
 
                       <Box display="flex" justifyContent="center" gap={1}>
-                        <LocalGasStationIcon fontSize="small"/>
-                        <Typography variant="body2">
+                        <LocalGasStationIcon fontSize="small" aria-hidden="true" />
+                        <Typography component="p" variant="body2">
                           {car.fuel}
                         </Typography>
                       </Box>
 
                       <Box display="flex" justifyContent="center" gap={1}>
-                        <SettingsIcon fontSize="small"/>
-                        <Typography variant="body2">
+                        <SettingsIcon fontSize="small" aria-hidden="true" />
+                        <Typography component="p" variant="body2">
                           {car.trans}
                         </Typography>
                       </Box>
-
                     </Stack>
-
                   </Box>
 
-
                   <Stack spacing={1.5} mt={3}>
-
                     <Button
                       variant="contained"
                       fullWidth
                       onClick={() => addCart(car)}
+                      aria-label={`Comprar ${car.name}`}
                     >
                       Comprar
                     </Button>
@@ -280,26 +228,19 @@ export const Article = () => {
                         backgroundColor: favorite ? "red" : "transparent",
                         borderColor: favorite ? "red" : ""
                       }}
+                      aria-label={favorite ? `El auto ${car.name} está en favoritos` : `Agregar ${car.name} a favoritos`}
                     >
                       {favorite ? "Guardado" : "Agregar a favoritos"}
                     </Button>
-
                   </Stack>
-
                 </CardContent>
-
               </Card>
-
             );
-
           })}
-
         </Box>
 
-        <Divider sx={{ my: 8 }}/>
-
+        <Divider sx={{ my: 8 }} />
       </Container>
-
-    </>
+    </main>
   );
 };
