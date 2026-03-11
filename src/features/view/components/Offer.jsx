@@ -43,7 +43,6 @@ export const Offer = () => {
     >
 
       {/* Título principal */}
-
       <Typography
         id="hooks-title"
         component="h1"
@@ -79,8 +78,7 @@ export const Offer = () => {
 
             <CardContent sx={{ textAlign: "center" }}>
 
-              {/* Subtítulo */}
-
+              {/* Título del card */}
               <Typography
                 id={`title-${card.id}`}
                 component="h2"
@@ -90,7 +88,10 @@ export const Offer = () => {
                 {card.title}
               </Typography>
 
-              {card.component}
+              {/* Contenido del card */}
+              <Typography component="p">
+                {card.component}
+              </Typography>
 
             </CardContent>
 
@@ -99,7 +100,6 @@ export const Offer = () => {
         ))}
 
         {/* Estado de conexión */}
-
         <Card
           component="section"
           aria-labelledby="online-status-title"
@@ -121,7 +121,6 @@ export const Offer = () => {
             </Typography>
 
             <Box mt={2}>
-
               <Typography
                 component="p"
                 aria-live="polite"
@@ -135,7 +134,6 @@ export const Offer = () => {
                   ? "Conectado a internet"
                   : "Sin conexión a internet"}
               </Typography>
-
             </Box>
 
           </CardContent>
