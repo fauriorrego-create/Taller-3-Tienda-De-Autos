@@ -30,9 +30,11 @@ export const Content = () => {
 
     <main>
 
-      {/* HERO VIDEO */}
+      {/* HERO */}
 
       <Box
+        component="section"
+        aria-labelledby="hero-title"
         sx={{
           position: "relative",
           height: { xs: "60vh", md: "80vh" },
@@ -43,7 +45,8 @@ export const Content = () => {
         <Box
           component="img"
           src="/img/auto14.jpg"
-          alt="img promocional de autos deportivos"
+          alt="Auto deportivo de alto rendimiento promocional"
+          loading="eager"
           sx={{
             position: "absolute",
             width: "100%",
@@ -51,7 +54,6 @@ export const Content = () => {
             objectFit: "cover"
           }}
         />
-
 
         <Box
           sx={{
@@ -77,22 +79,17 @@ export const Content = () => {
         >
 
           <Typography
+            id="hero-title"
             variant="h3"
             component="h1"
             fontWeight="bold"
-            sx={{
-              fontSize: { xs: "2rem", md: "3rem" }
-            }}
           >
             Tecnología que transforma tu mundo
           </Typography>
 
           <Typography
-            variant="h6"
-            sx={{
-              mt: 2,
-              maxWidth: 600
-            }}
+            component="p"
+            sx={{ mt: 2, maxWidth: 600 }}
           >
             Descubre autos de alto rendimiento con el mejor diseño
             y la tecnología más avanzada.
@@ -103,7 +100,6 @@ export const Content = () => {
             size="large"
             component={RouterLink}
             to="/shopping"
-            aria-label="Ir a la tienda de autos"
             sx={{ mt: 4 }}
           >
             Comprar ahora
@@ -115,7 +111,22 @@ export const Content = () => {
 
       {/* CARACTERISTICAS */}
 
-      <Container sx={{ py: 8 }}>
+      <Container
+        component="section"
+        aria-labelledby="features-title"
+        sx={{ py: 8 }}
+      >
+
+        <Typography
+          id="features-title"
+          variant="h4"
+          component="h2"
+          textAlign="center"
+          fontWeight="bold"
+          mb={5}
+        >
+          Características
+        </Typography>
 
         <Stack
           direction={{ xs: "column", md: "row" }}
@@ -126,9 +137,9 @@ export const Content = () => {
 
           <Box>
 
-            <SpeedIcon sx={{ fontSize: 40, mb: 1 }} aria-hidden="true" />
+            <SpeedIcon sx={{ fontSize: 40, mb: 1 }} aria-hidden />
 
-            <Typography fontWeight="bold">
+            <Typography component="h3" fontWeight="bold">
               Máximo rendimiento
             </Typography>
 
@@ -140,9 +151,9 @@ export const Content = () => {
 
           <Box>
 
-            <SecurityIcon sx={{ fontSize: 40, mb: 1 }} aria-hidden="true" />
+            <SecurityIcon sx={{ fontSize: 40, mb: 1 }} aria-hidden />
 
-            <Typography fontWeight="bold">
+            <Typography component="h3" fontWeight="bold">
               Seguridad avanzada
             </Typography>
 
@@ -154,9 +165,9 @@ export const Content = () => {
 
           <Box>
 
-            <LocalShippingIcon sx={{ fontSize: 40, mb: 1 }} aria-hidden="true" />
+            <LocalShippingIcon sx={{ fontSize: 40, mb: 1 }} aria-hidden />
 
-            <Typography fontWeight="bold">
+            <Typography component="h3" fontWeight="bold">
               Envío internacional
             </Typography>
 
@@ -170,11 +181,16 @@ export const Content = () => {
 
       </Container>
 
-      {/* PRODUCTOS DESTACADOS */}
+      {/* PRODUCTOS */}
 
-      <Container sx={{ pb: 8 }}>
+      <Container
+        component="section"
+        aria-labelledby="products-title"
+        sx={{ pb: 8 }}
+      >
 
         <Typography
+          id="products-title"
           variant="h4"
           component="h2"
           fontWeight="bold"
@@ -185,8 +201,6 @@ export const Content = () => {
         </Typography>
 
         <Box
-          role="list"
-          aria-label="Lista de autos destacados"
           sx={{
             display: "flex",
             gap: 3,
@@ -197,11 +211,10 @@ export const Content = () => {
           }}
         >
 
-          {products.map((product, index) => (
+          {products.map((product) => (
 
             <Card
-              key={index}
-              role="listitem"
+              key={product.name}
               sx={{
                 minWidth: 280,
                 flexShrink: 0,
@@ -218,7 +231,7 @@ export const Content = () => {
               <CardMedia
                 component="img"
                 image={product.img}
-                alt={`Imagen del auto ${product.name}`}
+                alt={`Auto deportivo ${product.name}`}
                 loading="lazy"
                 sx={{
                   height: 220,
@@ -228,7 +241,7 @@ export const Content = () => {
 
               <CardContent>
 
-                <Typography variant="h6" component="h3">
+                <Typography component="h3" variant="h6">
                   {product.name}
                 </Typography>
 
@@ -242,7 +255,6 @@ export const Content = () => {
                   sx={{ mt: 2 }}
                   component={RouterLink}
                   to="/shopping"
-                  aria-label={`Ver producto ${product.name}`}
                 >
                   Ver producto
                 </Button>
@@ -257,42 +269,11 @@ export const Content = () => {
 
       </Container>
 
-      {/* BANNER PROMOCIONAL */}
-
-      <Box
-        sx={{
-          background: "linear-gradient(135deg,#111,#333)",
-          color: "white",
-          textAlign: "center",
-          py: 8,
-          px: 2
-        }}
-      >
-
-        <Typography variant="h4" component="h2" fontWeight="bold">
-          Encuentra el auto de tus sueños
-        </Typography>
-
-        <Typography sx={{ mt: 2, mb: 3 }}>
-          Explora nuestra colección exclusiva de autos deportivos
-        </Typography>
-
-        <Button
-          variant="contained"
-          size="large"
-          component={RouterLink}
-          to="/shopping"
-          aria-label="Explorar catálogo de autos"
-        >
-          Explorar catálogo
-        </Button>
-
-      </Box>
-
-      {/* REPOSITORIO DEL PROYECTO */}
+      {/* REPOSITORIO */}
 
       <Box
         component="section"
+        aria-labelledby="repo-title"
         sx={{
           py: 10,
           px: 2,
@@ -306,9 +287,10 @@ export const Content = () => {
 
           <Stack spacing={3} alignItems="center">
 
-            <GitHubIcon sx={{ fontSize: 50 }} aria-hidden="true" />
+            <GitHubIcon sx={{ fontSize: 50 }} aria-hidden />
 
             <Typography
+              id="repo-title"
               variant="h4"
               component="h2"
               fontWeight="bold"
@@ -316,26 +298,19 @@ export const Content = () => {
               Repositorio de la Web
             </Typography>
 
-            <Typography
-              sx={{
-                maxWidth: 600,
-                color: "rgba(255,255,255,0.8)"
-              }}
-            >
-              Este proyecto es una tienda de autos desarrollada con
-              React, Vite y Material UI. Puedes explorar el código
-              completo, su arquitectura y las funcionalidades en
-              nuestro repositorio oficial de GitHub.
+            <Typography sx={{ maxWidth: 600 }}>
+              Este proyecto es una tienda de autos desarrollada con React,
+              Vite y Material UI.
             </Typography>
 
             <Button
+              component="a"
               variant="contained"
               size="large"
               startIcon={<GitHubIcon />}
-              href="https://github.com/fauriorrego-create/Taller-3-Tienda-De-Autos.git"
+              href="https://github.com/fauriorrego-create/Taller-3-Tienda-De-Autos"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Ir al repositorio de GitHub del proyecto"
               sx={{
                 mt: 2,
                 px: 4,
@@ -343,9 +318,7 @@ export const Content = () => {
                 fontWeight: "bold",
                 borderRadius: 3,
                 background: "#24292e",
-                "&:hover": {
-                  background: "#000"
-                }
+                "&:hover": { background: "#000" }
               }}
             >
               Ver repositorio en GitHub
