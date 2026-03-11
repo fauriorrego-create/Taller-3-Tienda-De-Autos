@@ -220,18 +220,27 @@ export const Article = () => {
 
                     <Button
                       variant={favorite ? "contained" : "outlined"}
-                      startIcon={<FavoriteBorderIcon />}
+                      startIcon={<FavoriteBorderIcon aria-hidden="true" />}
                       fullWidth
                       onClick={() => toggleFavorite(car)}
+                      aria-pressed={favorite}
+                      aria-label={
+                        favorite
+                          ? `El auto ${car.name} está en favoritos`
+                          : `Agregar ${car.name} a favoritos`
+                      }
                       sx={{
-                        color: favorite ? "white" : "inherit",
-                        backgroundColor: favorite ? "red" : "transparent",
-                        borderColor: favorite ? "red" : ""
+                        bgcolor: favorite ? "error.dark" : "transparent",
+                        color: favorite ? "common.white" : "text.primary",
+                        borderColor: favorite ? "error.dark" : "divider",
+                        "&:hover": {
+                          bgcolor: favorite ? "error.main" : "action.hover"
+                        }
                       }}
-                      aria-label={favorite ? `El auto ${car.name} está en favoritos` : `Agregar ${car.name} a favoritos`}
                     >
                       {favorite ? "Guardado" : "Agregar a favoritos"}
                     </Button>
+
                   </Stack>
                 </CardContent>
               </Card>
